@@ -9,31 +9,29 @@
 import UIKit
 
 final class ListViewController: UIViewController, UITableViewDelegate {
+ 
+    private(set) var headerArray = ["Первая заметка"]
+    private(set) var bodyArray = ["Это ваша первая заметка"]
+    
+    let savedHeaders = UserDefaults.standard
+    let savedBodies = UserDefaults.standard // Создаем хранилища для заметок и их заголовков
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        headerArray = savedHeaders.array(forKey: "headerListArray") as! [String]
-        bodyArray = savedBodies.array(forKey: "bodyListArray") as! [String] // Проверяем есть ли в userDefaults сохраненные заметки
+        if let headers = savedHeaders.array(forKey: "headerListArray") as? [String] { headerArray = headers }
+        
+        if let bodies = savedBodies.array(forKey: "bodyListArray") as? [String] { bodyArray = bodies } // Проверяем есть ли в userDefaults сохраненные заметки
         
         title = Constants.notesList
         label.text = Constants.noNotes
         listOfNotes.dataSource = self
         listOfNotes.delegate = self
         
-        if headerArray.count == 0 {
-            self.listOfNotes.isHidden = true
-            self.label.isHidden = false} // Скрываем таблицу если заметок нет и показываем юзеру надпись об этом
     }
     
     @IBOutlet var listOfNotes: UITableView!
     @IBOutlet var label: UILabel!
-    
-    private(set) var headerArray = ["Первая заметка"]
-    private(set) var bodyArray = ["Это ваша первая заметка"]
-    
-    let savedHeaders = UserDefaults.standard
-    let savedBodies = UserDefaults.standard // Создаем хранилища для заметок и их заголовков
     
     @IBAction func addNewNote() {
         guard let vc = storyboard?.instantiateViewController(identifier: "create") as? NewNoteViewController else { return }
@@ -46,9 +44,11 @@ final class ListViewController: UIViewController, UITableViewDelegate {
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
             self.savedBodies.set(self.bodyArray, forKey: "bodyListArray")
             // Сохранение списка заметок
+            self.listOfNotes.isHidden = false
+            self.label.isHidden = true
             self.listOfNotes.reloadData()
         }
-            navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
@@ -75,6 +75,19 @@ extension ListViewController: UITableViewDataSource {
         vc.noteBody = bodyArray[indexPath.row]
         // Передаем в контроллер заголовок и текст заметки
         navigationController?.pushViewController(vc, animated: true)
-            
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            headerArray.remove(at: indexPath.row)
+            bodyArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
+            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray")
+            if headerArray.count == 0 {
+                self.listOfNotes.isHidden = true
+                self.label.isHidden = false
+            }
         }
+    }
 }
