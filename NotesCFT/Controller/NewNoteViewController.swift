@@ -26,7 +26,7 @@ final class NewNoteViewController: UIViewController {
         let alert = UIAlertController(title: Constants.error, message: Constants.errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
         self.present(alert, animated: true, completion: nil)
-    }
+    } // Предупреждение об ошибке на случай если юзер будет сохранять пустые заметки
     
     @objc func saveNote() {
         guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
