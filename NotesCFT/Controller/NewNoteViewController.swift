@@ -12,27 +12,20 @@ final class NewNoteViewController: UIViewController {
     @IBOutlet var header: UITextField!
     @IBOutlet var body: UITextView!
     
-    public var editingEnded: ((String, String) -> Void)?
+    public var callbackNew: ((String, String) -> Void)? // Для передачи заголовков и текстов новых заметок обратно в общий список заметок
     
     override func viewDidLoad() {
         super.viewDidLoad()
         header.placeholder = Constants.headerPlaceholder
-        header.becomeFirstResponder() // Показываем клавиатуру для ввода заголовка заметки
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.saveButton, style: .done, target: self, action: #selector(saveNote))
+        header.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
+        if self.isMovingFromParent {
+            guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else { return } // Проверки текстов на nil, пустоту и двойной пробел
+            callbackNew?(headerText, body.text) // Сохраняем заметки автоматом после выхода из заметки
+        }
     }
-   
-    func saveAlert() {
-        let alert = UIAlertController(title: Constants.error, message: Constants.errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
-        self.present(alert, animated: true, completion: nil)
-    } // Предупреждение об ошибке на случай если юзер будет сохранять пустые заметки
-    
-    @objc func saveNote() {
-        guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
-            saveAlert()
-            return } // Проверки на nil, пустоту и двойной пробел
-        editingEnded?(headerText, body.text)
-    }
-    
 }

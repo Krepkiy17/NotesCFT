@@ -9,12 +9,12 @@
 import UIKit
 
 final class ListViewController: UIViewController, UITableViewDelegate {
- 
+    
     private(set) var headerArray = ["Первая заметка"]
     private(set) var bodyArray = ["Это ваша первая заметка"]
     
     let savedHeaders = UserDefaults.standard
-    let savedBodies = UserDefaults.standard // Создаем хранилища для заметок и их заголовков
+    let savedBodies = UserDefaults.standard // Создаем хранилища для заголовков и текстов заметок
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,11 @@ final class ListViewController: UIViewController, UITableViewDelegate {
         label.text = Constants.noNotes
         listOfNotes.dataSource = self
         listOfNotes.delegate = self
-        
+        self.listOfNotes.isHidden = false
+        if headerArray.count == 0 {
+            self.listOfNotes.isHidden = true
+            self.label.isHidden = false
+        }
     }
     
     @IBOutlet var listOfNotes: UITableView!
@@ -37,7 +41,7 @@ final class ListViewController: UIViewController, UITableViewDelegate {
         guard let vc = storyboard?.instantiateViewController(identifier: "create") as? NewNoteViewController else { return }
         vc.navigationItem.largeTitleDisplayMode = .never
         vc.title = Constants.newNoteHeader
-        vc.editingEnded = { forHeader, forBody in
+        vc.callbackNew = { forHeader, forBody in
             self.navigationController?.popToRootViewController(animated: true)
             self.headerArray.append(forHeader)
             self.bodyArray.append(forBody)
@@ -62,8 +66,8 @@ extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = listOfNotes.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = headerArray[indexPath.row]
+        cell.textLabel?.font = UIFont.systemFont(ofSize:22.0)
         cell.detailTextLabel?.text = bodyArray[indexPath.row]
-        cell.detailTextLabel?.font = UIFont.systemFont(ofSize:15.0)
         return cell
     }
     
@@ -71,6 +75,17 @@ extension ListViewController: UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let vc = storyboard?.instantiateViewController(identifier: "note") as? NoteViewController else { return }
         vc.navigationItem.largeTitleDisplayMode = .never // Для стиля по гайдлайнам
+        vc.callbackChange = { forHeader, forBody in
+            self.navigationController?.popToRootViewController(animated: true)
+            self.headerArray[indexPath.row] = forHeader
+            self.bodyArray[indexPath.row] = forBody
+            self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
+            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray")
+            // Сохранение списка заметок
+            self.listOfNotes.isHidden = false
+            self.label.isHidden = true
+            self.listOfNotes.reloadData()
+        }
         vc.noteHeader = headerArray[indexPath.row]
         vc.noteBody = bodyArray[indexPath.row]
         // Передаем в контроллер заголовок и текст заметки

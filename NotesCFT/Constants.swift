@@ -12,7 +12,7 @@ struct Constants {
     static let noNotes = "У вас еще нет заметок"
     static let newNoteHeader = "Новая заметка"
     static let saveButton = "Сохранить"
-    static let error = "Ошибка"
+    static let errorWord = "Ошибка"
     static let errorMessage = "Для сохранения заметки нужно ввести название и текст"
     static let headerPlaceholder = "Название заметки"
 }
