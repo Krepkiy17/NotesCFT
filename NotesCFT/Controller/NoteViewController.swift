@@ -16,12 +16,8 @@ final class NoteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        header.textColor = UIColor.orange
         header.text = noteHeader
         body.text = noteBody
-        
     }
-    
-    
     
 }

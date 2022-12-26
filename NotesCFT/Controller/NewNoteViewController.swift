@@ -17,15 +17,13 @@ final class NewNoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         header.placeholder = Constants.headerPlaceholder
-        header.textColor = UIColor.orange
-        header.becomeFirstResponder()
+        header.becomeFirstResponder() // Показываем клавиатуру для ввода заголовка заметки
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.saveButton, style: .done, target: self, action: #selector(saveNote))
         
     }
    
     func saveAlert() {
         let alert = UIAlertController(title: Constants.error, message: Constants.errorMessage, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
         self.present(alert, animated: true, completion: nil)
     }
@@ -33,7 +31,7 @@ final class NewNoteViewController: UIViewController {
     @objc func saveNote() {
         guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
             saveAlert()
-            return } // Доп проверка на двойной пробел
+            return } // Проверки на nil, пустоту и двойной пробел
         editingEnded?(headerText, body.text)
     }
     
