@@ -80,7 +80,7 @@ extension ListViewController: UITableViewDataSource {
         guard let vc = storyboard?.instantiateViewController(identifier: "note") as? NoteViewController else { return }
         vc.navigationItem.largeTitleDisplayMode = .never
         vc.noteHeader = headerArray[indexPath.row]
-        vc.noteBody = headerArray[indexPath.row]
+        vc.noteBody = bodyArray[indexPath.row]
         //vc.noteHeader = existingNote.header
         //vc.noteBody = existingNote.body // Передаем в контроллер заголовок и текст заметки
         navigationController?.pushViewController(vc, animated: true)
