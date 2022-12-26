@@ -7,22 +7,21 @@
 import UIKit
 
 final class NoteViewController: UIViewController {
-
+    
+    @IBOutlet var header: UITextField!
+    @IBOutlet var body: UITextView!
+    
+    public var noteHeader: String = ""
+    public var noteBody: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        header.textColor = UIColor.orange
+        header.text = noteHeader
+        body.text = noteBody
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
+    
 }

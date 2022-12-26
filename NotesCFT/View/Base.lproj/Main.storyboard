@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S1m-et-pY2">
-                                <rect key="frame" x="162.33333333333334" y="415.66666666666669" width="68.666666666666657" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S1m-et-pY2">
+                                <rect key="frame" x="176" y="415.66666666666669" width="41.333333333333343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -64,9 +64,15 @@
                             <constraint firstAttribute="trailing" secondItem="Y58-Ka-Qr7" secondAttribute="trailing" id="pux-gq-Eis"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Notes List" id="sdK-Qu-c1y"/>
+                    <navigationItem key="navigationItem" title="Notes List" id="sdK-Qu-c1y">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="GJ3-2k-rj5">
+                            <connections>
+                                <action selector="addNewNote" destination="BYZ-38-t0r" id="O7y-el-qPx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="lable" destination="S1m-et-pY2" id="SQh-oV-lQT"/>
+                        <outlet property="label" destination="S1m-et-pY2" id="DT7-Ku-mug"/>
                         <outlet property="listOfNotes" destination="Y58-Ka-Qr7" id="tXw-nB-iNF"/>
                     </connections>
                 </viewController>
@@ -81,9 +87,39 @@
                     <view key="view" contentMode="scaleToFill" id="lcB-Bt-DfB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Note name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NVZ-fN-Xlp">
+                                <rect key="frame" x="15" y="74" width="363" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="AMg-F0-lPa"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3oR-nX-w2N">
+                                <rect key="frame" x="15" y="164" width="363" height="639"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="FRL-cF-Nor"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FRL-cF-Nor" firstAttribute="trailing" secondItem="3oR-nX-w2N" secondAttribute="trailing" constant="15" id="ADn-5O-fz1"/>
+                            <constraint firstItem="3oR-nX-w2N" firstAttribute="top" secondItem="NVZ-fN-Xlp" secondAttribute="bottom" constant="30" id="Cm0-pB-Gt7"/>
+                            <constraint firstItem="3oR-nX-w2N" firstAttribute="leading" secondItem="FRL-cF-Nor" secondAttribute="leading" constant="15" id="D57-2H-1ri"/>
+                            <constraint firstItem="FRL-cF-Nor" firstAttribute="bottom" secondItem="3oR-nX-w2N" secondAttribute="bottom" constant="15" id="LWq-wr-pAh"/>
+                            <constraint firstItem="NVZ-fN-Xlp" firstAttribute="top" secondItem="FRL-cF-Nor" secondAttribute="top" constant="15" id="YPV-Ff-Ca5"/>
+                            <constraint firstItem="NVZ-fN-Xlp" firstAttribute="leading" secondItem="FRL-cF-Nor" secondAttribute="leading" constant="15" id="vlm-H1-k3A"/>
+                            <constraint firstItem="FRL-cF-Nor" firstAttribute="trailing" secondItem="NVZ-fN-Xlp" secondAttribute="trailing" constant="15" id="xYt-Q9-4ei"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="body" destination="3oR-nX-w2N" id="OV1-FP-KNQ"/>
+                        <outlet property="header" destination="NVZ-fN-Xlp" id="9MZ-b5-y2U"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BNu-gn-BiD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -114,9 +150,39 @@
                     <view key="view" contentMode="scaleToFill" id="1RZ-ki-t4D">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="snM-5U-fwD">
+                                <rect key="frame" x="15" y="164" width="363" height="639"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Note name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vUC-Q4-4sx">
+                                <rect key="frame" x="20" y="74" width="353" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="La3-fL-Oea"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="9P9-wJ-kuV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9P9-wJ-kuV" firstAttribute="trailing" secondItem="snM-5U-fwD" secondAttribute="trailing" constant="15" id="8x1-Zu-Ss7"/>
+                            <constraint firstItem="9P9-wJ-kuV" firstAttribute="bottom" secondItem="snM-5U-fwD" secondAttribute="bottom" constant="15" id="OMn-b3-f5L"/>
+                            <constraint firstItem="snM-5U-fwD" firstAttribute="leading" secondItem="9P9-wJ-kuV" secondAttribute="leading" constant="15" id="Sp8-5A-vAG"/>
+                            <constraint firstItem="vUC-Q4-4sx" firstAttribute="top" secondItem="9P9-wJ-kuV" secondAttribute="top" constant="15" id="ful-Wr-LAT"/>
+                            <constraint firstItem="9P9-wJ-kuV" firstAttribute="trailing" secondItem="vUC-Q4-4sx" secondAttribute="trailing" constant="20" id="nZa-BK-ztZ"/>
+                            <constraint firstItem="vUC-Q4-4sx" firstAttribute="leading" secondItem="9P9-wJ-kuV" secondAttribute="leading" constant="20" id="oqJ-1G-wBy"/>
+                            <constraint firstItem="snM-5U-fwD" firstAttribute="top" secondItem="vUC-Q4-4sx" secondAttribute="bottom" constant="30" id="qVD-wm-94c"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="body" destination="snM-5U-fwD" id="IB6-4C-By1"/>
+                        <outlet property="header" destination="vUC-Q4-4sx" id="F6s-U9-F5N"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uoQ-8m-Ne2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -124,6 +190,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

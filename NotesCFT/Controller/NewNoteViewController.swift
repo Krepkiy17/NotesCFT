@@ -8,22 +8,33 @@
 import UIKit
 
 final class NewNoteViewController: UIViewController {
-
+    
+    @IBOutlet var header: UITextField!
+    @IBOutlet var body: UITextView!
+    
+    public var editingEnded: ((String, String) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        header.placeholder = Constants.headerPlaceholder
+        header.textColor = UIColor.orange
+        header.becomeFirstResponder()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.saveButton, style: .done, target: self, action: #selector(saveNote))
+        
+    }
+   
+    func saveAlert() {
+        let alert = UIAlertController(title: Constants.error, message: Constants.errorMessage, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
+        self.present(alert, animated: true, completion: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func saveNote() {
+        guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
+            saveAlert()
+            return } // Доп проверка на двойной пробел
+        editingEnded?(headerText, body.text)
     }
-    */
-
+    
 }
