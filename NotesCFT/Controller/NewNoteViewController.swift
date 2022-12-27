@@ -2,7 +2,7 @@
 //  Управляет экраном с созданием новой заметки
 //
 //
-//  Created by Кирилл on 24.12.22..
+//  Created by Kirill Bratukhin © on 24.12.22..
 //
 
 import UIKit

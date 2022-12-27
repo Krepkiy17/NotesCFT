@@ -2,7 +2,7 @@
 //  Управляет экраном со списком всех заметок
 //
 //
-//  Created by Кирилл on 22.12.22..
+//  Created by Kirill Bratukhin © on 22.12.22..
 //
 
 
@@ -42,7 +42,6 @@ final class ListViewController: UIViewController, UITableViewDelegate {
         vc.navigationItem.largeTitleDisplayMode = .never
         vc.title = Constants.newNoteHeader
         vc.callbackNew = { forHeader, forBody in
-            self.navigationController?.popToRootViewController(animated: true)
             self.headerArray.append(forHeader)
             self.bodyArray.append(forBody)
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
@@ -74,9 +73,8 @@ extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let vc = storyboard?.instantiateViewController(identifier: "note") as? NoteViewController else { return }
-        vc.navigationItem.largeTitleDisplayMode = .never // Для стиля по гайдлайнам
+        vc.navigationItem.largeTitleDisplayMode = .never // Для стиля по гайдлайнам Apple HIG
         vc.callbackChange = { forHeader, forBody in
-            self.navigationController?.popToRootViewController(animated: true)
             self.headerArray[indexPath.row] = forHeader
             self.bodyArray[indexPath.row] = forBody
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
