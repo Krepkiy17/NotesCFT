@@ -93,9 +93,9 @@ extension ListViewController: UITableViewDataSource {
         if editingStyle == .delete {
             headerArray.remove(at: indexPath.row)
             bodyArray.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic) // Удаляем сначала элементы из массива затем уже ячейку TableView чтобы избежать конфликтов
+            tableView.deleteRows(at: [indexPath], with: .automatic) // Удаляем сначала элементы из массивов затем уже ячейку TableView чтобы избежать конфликтов
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
-            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray") // Обновляем порядок заметок в массивах
+            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray") // Обновляем массивы в UserDefaults
             if headerArray.count == 0 {
                 self.listOfNotes.isHidden = true
                 self.label.isHidden = false

@@ -25,7 +25,7 @@ final class NewNoteViewController: UIViewController {
         
         if self.isMovingFromParent {
             guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else { return } // Проверки текстов на nil, пустоту и двойной пробел - при ошибке заметка не создается
-            callbackNew?(headerText, body.text) // Сохраняем заметки автоматического после каждого выхода из заметки
+            callbackNew?(headerText, body.text) // Сохраняем заметки автоматически после каждого выхода из заметки
         }
     }
 }
