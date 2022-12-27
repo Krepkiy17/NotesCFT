@@ -14,14 +14,14 @@ final class ListViewController: UIViewController, UITableViewDelegate {
     private(set) var bodyArray = ["Это ваша первая заметка"]
     
     let savedHeaders = UserDefaults.standard
-    let savedBodies = UserDefaults.standard // Создаем хранилища для заголовков и текстов заметок
+    let savedBodies = UserDefaults.standard // Создаем UserDefaults для заголовков и текстов заметок
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let headers = savedHeaders.array(forKey: "headerListArray") as? [String] { headerArray = headers }
         
-        if let bodies = savedBodies.array(forKey: "bodyListArray") as? [String] { bodyArray = bodies } // Проверяем есть ли в userDefaults сохраненные заметки
+        if let bodies = savedBodies.array(forKey: "bodyListArray") as? [String] { bodyArray = bodies } // Проверяем есть ли в UserDefaults сохраненные тексты заметок и заголовки, если они есть добавляем их в массивы
         
         title = Constants.notesList
         label.text = Constants.noNotes
@@ -31,7 +31,7 @@ final class ListViewController: UIViewController, UITableViewDelegate {
         if headerArray.count == 0 {
             self.listOfNotes.isHidden = true
             self.label.isHidden = false
-        }
+        } // Проверяем есть ли у нас данные в массиве, если массив пустой прячем TableView и показываем надпись что заметок в списке нет
     }
     
     @IBOutlet var listOfNotes: UITableView!
@@ -39,14 +39,14 @@ final class ListViewController: UIViewController, UITableViewDelegate {
     
     @IBAction func addNewNote() {
         guard let vc = storyboard?.instantiateViewController(identifier: "create") as? NewNoteViewController else { return }
-        vc.navigationItem.largeTitleDisplayMode = .never
-        vc.title = Constants.newNoteHeader
+        vc.navigationItem.largeTitleDisplayMode = .never // Для стиля по гайдлайнам Apple HIG
+        vc.title = Constants.newNoteHeader // Создаем экран новой заметки
         vc.callbackNew = { forHeader, forBody in
             self.headerArray.append(forHeader)
-            self.bodyArray.append(forBody)
+            self.bodyArray.append(forBody) // Забираем из экрана новой заметки заголовок и текст и добавляем в массивы
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
             self.savedBodies.set(self.bodyArray, forKey: "bodyListArray")
-            // Сохранение списка заметок
+            //  Сохраняем массивы в UserDefaults
             self.listOfNotes.isHidden = false
             self.label.isHidden = true
             self.listOfNotes.reloadData()
@@ -68,18 +68,17 @@ extension ListViewController: UITableViewDataSource {
         cell.textLabel?.font = UIFont.systemFont(ofSize:22.0)
         cell.detailTextLabel?.text = bodyArray[indexPath.row]
         return cell
-    }
+    } // Подгружаем заголовок и текст заметок в список заметок из массивов
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let vc = storyboard?.instantiateViewController(identifier: "note") as? NoteViewController else { return }
+        guard let vc = storyboard?.instantiateViewController(identifier: "note") as? NoteViewController else { return } // Создаем экран старой заметки
         vc.navigationItem.largeTitleDisplayMode = .never // Для стиля по гайдлайнам Apple HIG
         vc.callbackChange = { forHeader, forBody in
             self.headerArray[indexPath.row] = forHeader
-            self.bodyArray[indexPath.row] = forBody
+            self.bodyArray[indexPath.row] = forBody // Забираем из экрана старой заметки актуальный заголовок и текст и перезаписываем их в массивах
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
-            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray")
-            // Сохранение списка заметок
+            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray") // Обновляем массивы в UserDefaults
             self.listOfNotes.isHidden = false
             self.label.isHidden = true
             self.listOfNotes.reloadData()
@@ -94,9 +93,9 @@ extension ListViewController: UITableViewDataSource {
         if editingStyle == .delete {
             headerArray.remove(at: indexPath.row)
             bodyArray.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.deleteRows(at: [indexPath], with: .automatic) // Удаляем сначала элементы из массива затем уже ячейку TableView чтобы избежать конфликтов
             self.savedHeaders.set(self.headerArray, forKey: "headerListArray")
-            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray")
+            self.savedBodies.set(self.bodyArray, forKey: "bodyListArray") // Обновляем порядок заметок в массивах
             if headerArray.count == 0 {
                 self.listOfNotes.isHidden = true
                 self.label.isHidden = false

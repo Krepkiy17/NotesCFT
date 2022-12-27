@@ -12,7 +12,7 @@ final class NewNoteViewController: UIViewController {
     @IBOutlet var header: UITextField!
     @IBOutlet var body: UITextView!
     
-    public var callbackNew: ((String, String) -> Void)? // Для передачи заголовков и текстов новых заметок обратно в общий список заметок
+    public var callbackNew: ((String, String) -> Void)? // Создаем Closure для передачи заголовков и текстов новых заметок обратно в общий список заметок
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +24,8 @@ final class NewNoteViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         if self.isMovingFromParent {
-            guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else { return } // Проверки текстов на nil, пустоту и двойной пробел
-            callbackNew?(headerText, body.text) // Сохраняем заметки автоматом после выхода из заметки
+            guard let headerText = header.text, !headerText.isEmpty, !headerText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, !body.text.isEmpty, !body.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else { return } // Проверки текстов на nil, пустоту и двойной пробел - при ошибке заметка не создается
+            callbackNew?(headerText, body.text) // Сохраняем заметки автоматического после каждого выхода из заметки
         }
     }
 }
